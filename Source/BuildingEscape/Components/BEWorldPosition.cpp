@@ -24,8 +24,13 @@ void UBEWorldPosition::BeginPlay()
 // 	FString* PtrLog = &Log;
 // 	// ...
 // 	UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);
-	FString OwnerName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Owner's name: %s"), *OwnerName);
+	if (GetOwner())
+	{
+		FString OwnerName = GetOwner()->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("Owner's name: %s"), *OwnerName);
+		FString ObjectPosition = GetOwner()->GetActorTransform().GetLocation().ToCompactString();
+		UE_LOG(LogTemp, Warning, TEXT("Object position: %s"), *ObjectPosition);
+	}
 }
 
 
