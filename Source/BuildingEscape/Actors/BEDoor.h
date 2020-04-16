@@ -36,4 +36,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FRotator DoorRotation;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float YawToAdd;
+
+	UPROPERTY()
+	float TargetYaw;
+
+	UPROPERTY()
+	float CurrentYaw;
+
 };

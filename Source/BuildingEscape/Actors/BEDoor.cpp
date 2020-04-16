@@ -21,24 +21,34 @@ ABEDoor::ABEDoor()
 	DoorFrameComp->SetupAttachment(RootComponent);
 
 	DoorRotation = FRotator(FRotator::ZeroRotator);
+	YawToAdd = 90.f;
+	TargetYaw = 0.f;
+	CurrentYaw = 0.f;
 }
 
 // Called when the game starts or when spawned
 void ABEDoor::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	if (DoorMeshComp)
-	{
-		DoorRotation = DoorMeshComp->GetComponentRotation();
-		DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, DoorRotation.Yaw + 90.f, DoorRotation.Roll));
-	}
+ 	{
+ 		DoorRotation = DoorMeshComp->GetComponentRotation();
+		CurrentYaw = DoorRotation.Yaw;
+		TargetYaw = CurrentYaw + YawToAdd;
+ 		//DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, DoorRotation.Yaw + 90.f, DoorRotation.Roll));
+ 	}
+	
 }
 
 // Called every frame
 void ABEDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, 0.1f);
+	if (DoorMeshComp)
+	{
+		//DoorRotation = DoorMeshComp->GetComponentRotation();
+		DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, CurrentYaw, DoorRotation.Roll));
+	}
 }
 
