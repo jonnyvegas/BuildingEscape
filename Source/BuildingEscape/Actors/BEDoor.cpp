@@ -27,6 +27,8 @@ ABEDoor::ABEDoor()
 	CurrentYaw = 0.f;
 	DoorRotationRate = 0.1f;
 	InitialYaw = 0.f;
+	DoorLastOpened = 0.f;
+	DoorDelay = 2.f;
 }
 
 // Called when the game starts or when spawned
@@ -59,14 +61,18 @@ void ABEDoor::Tick(float DeltaTime)
 				if (PawnToCheck)
 				{
 					OpenOrCloseDoor(DeltaTime, true);
+					DoorLastOpened = GetWorld()->GetTimeSeconds();
 					break;
 				}
 			}
 		}
 		else
 		{
-			OpenOrCloseDoor(DeltaTime, false);
-			//break;
+			if (GetWorld()->GetTimeSeconds() - DoorLastOpened >= DoorDelay)
+			{
+				OpenOrCloseDoor(DeltaTime, false);
+				//break;
+			}
 		}
 	}
 }

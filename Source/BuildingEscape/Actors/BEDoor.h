@@ -61,6 +61,12 @@ protected:
 	float InitialYaw;
 
 	UPROPERTY()
+	float DoorLastOpened;
+
+	UPROPERTY()
+	float DoorDelay;
+
+	UPROPERTY()
 	TArray<AActor*> OverlappingActors;
 
 	UPROPERTY(EditAnywhere)
