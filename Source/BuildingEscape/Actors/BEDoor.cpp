@@ -4,6 +4,7 @@
 #include "BEDoor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "Engine/TriggerVolume.h"
 
 // Sets default values
 ABEDoor::ABEDoor()
@@ -24,6 +25,8 @@ ABEDoor::ABEDoor()
 	YawToAdd = 90.f;
 	TargetYaw = 0.f;
 	CurrentYaw = 0.f;
+	DoorRotationRate = 0.1f;
+	InitialYaw = 0.f;
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +37,7 @@ void ABEDoor::BeginPlay()
  	{
  		DoorRotation = DoorMeshComp->GetComponentRotation();
 		CurrentYaw = DoorRotation.Yaw;
+		InitialYaw = CurrentYaw;
 		TargetYaw = CurrentYaw + YawToAdd;
  		//DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, DoorRotation.Yaw + 90.f, DoorRotation.Roll));
  	}
@@ -44,11 +48,42 @@ void ABEDoor::BeginPlay()
 void ABEDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, 0.1f);
+	if (PressurePlate)
+	{
+		PressurePlate->GetOverlappingActors(OverlappingActors, ActorSubclass);
+		if (OverlappingActors.Num() > 0)
+		{
+			for (AActor* Actor : OverlappingActors)
+			{
+				PawnToCheck = Cast<APawn>(Actor);
+				if (PawnToCheck)
+				{
+					OpenOrCloseDoor(DeltaTime, true);
+					break;
+				}
+			}
+		}
+		else
+		{
+			OpenOrCloseDoor(DeltaTime, false);
+			//break;
+		}
+	}
+}
+
+void ABEDoor::OpenOrCloseDoor(float DeltaTime, bool bOpen)
+{
+	if (bOpen)
+	{
+		CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * DoorRotationRate);
+	}
+	else
+	{
+		CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * DoorRotationRate);
+	}
 	if (DoorMeshComp)
 	{
 		//DoorRotation = DoorMeshComp->GetComponentRotation();
 		DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, CurrentYaw, DoorRotation.Roll));
 	}
 }
-

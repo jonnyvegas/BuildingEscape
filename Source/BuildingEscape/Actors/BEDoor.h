@@ -24,6 +24,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+	UFUNCTION(BlueprintCallable)
+	void OpenOrCloseDoor(float DeltaTime, bool bOpen = true);
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	class USceneComponent* SceneComp;
 
@@ -33,8 +36,17 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	UStaticMeshComponent* DoorFrameComp;
 
+	UPROPERTY(EditAnywhere)
+	class ATriggerVolume* PressurePlate;
+
+// 	UPROPERTY(EditAnywhere)
+// 	class AActor* ActorToOpenDoor;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FRotator DoorRotation;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float DoorRotationRate;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float YawToAdd;
@@ -44,5 +56,17 @@ protected:
 
 	UPROPERTY()
 	float CurrentYaw;
+
+	UPROPERTY()
+	float InitialYaw;
+
+	UPROPERTY()
+	TArray<AActor*> OverlappingActors;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ActorSubclass;
+
+	UPROPERTY()
+	APawn* PawnToCheck;
 
 };
