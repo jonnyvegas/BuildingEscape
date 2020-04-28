@@ -25,7 +25,8 @@ ABEDoor::ABEDoor()
 	YawToAdd = 90.f;
 	TargetYaw = 0.f;
 	CurrentYaw = 0.f;
-	DoorRotationRate = 0.1f;
+	OpenDoorRotationRate = 0.1f;
+	CloseDoorRotationRate = 0.1f;
 	InitialYaw = 0.f;
 	DoorLastOpened = 0.f;
 	DoorDelay = 2.f;
@@ -81,11 +82,11 @@ void ABEDoor::OpenOrCloseDoor(float DeltaTime, bool bOpen)
 {
 	if (bOpen)
 	{
-		CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * DoorRotationRate);
+		CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * OpenDoorRotationRate);
 	}
 	else
 	{
-		CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * DoorRotationRate);
+		CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * CloseDoorRotationRate);
 	}
 	if (DoorMeshComp)
 	{

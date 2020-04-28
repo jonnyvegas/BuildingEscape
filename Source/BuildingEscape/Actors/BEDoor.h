@@ -46,7 +46,10 @@ protected:
 	FRotator DoorRotation;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	float DoorRotationRate;
+	float OpenDoorRotationRate;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float CloseDoorRotationRate;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float YawToAdd;
@@ -63,7 +66,7 @@ protected:
 	UPROPERTY()
 	float DoorLastOpened;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float DoorDelay;
 
 	UPROPERTY()
