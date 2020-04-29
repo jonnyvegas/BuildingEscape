@@ -38,4 +38,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UFloatingPawnMovement* FloatingMovementComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* CapsuleComp;
+
 };
