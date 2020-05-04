@@ -45,4 +45,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UCapsuleComponent* CapsuleComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UPhysicsHandleComponent* PhysicsHandleComp;
+
+	UFUNCTION()
+	void GrabItem();
+
+	UFUNCTION()
+	void ReleaseItem();
+
 };

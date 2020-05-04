@@ -7,6 +7,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 // Sets default values
 ABEPawnNew::ABEPawnNew()
@@ -18,6 +19,7 @@ ABEPawnNew::ABEPawnNew()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
  	FloatingMovementComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovementComp"));
   	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionComp"));
+	PhysicsHandleComp = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandleComp"));
 	
 	RootComponent = CapsuleComp;
 
@@ -48,6 +50,8 @@ void ABEPawnNew::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABEPawnNew::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABEPawnNew::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookRight", this, &ABEPawnNew::AddControllerYawInput);
+	PlayerInputComponent->BindAction("GrabItem", EInputEvent::IE_Pressed, this, &ABEPawnNew::GrabItem);
+	PlayerInputComponent->BindAction("GrabItem", EInputEvent::IE_Released, this, &ABEPawnNew::ReleaseItem);
 
 }
 
@@ -59,5 +63,21 @@ void ABEPawnNew::MoveForward(float Val)
 void ABEPawnNew::MoveRight(float Val)
 {
 	AddMovementInput(GetActorRightVector(), Val);
+}
+
+void ABEPawnNew::GrabItem()
+{
+	if (GrabberComp)
+	{
+		GrabberComp->GrabItem();
+	}
+}
+
+void ABEPawnNew::ReleaseItem()
+{
+	if (GrabberComp)
+	{
+		GrabberComp->ReleaseItem();
+	}
 }
 
