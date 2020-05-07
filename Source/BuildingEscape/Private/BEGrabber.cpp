@@ -29,7 +29,7 @@ UBEGrabber::UBEGrabber()
 
 	QueryParams = FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody);
 
-	CollisionParams = FCollisionQueryParams(false);
+	CollisionParams = FCollisionQueryParams(FName(""), false);
 	PhysicsHandleComp = nullptr;
 	BEPawn = nullptr;
 
@@ -45,15 +45,10 @@ void UBEGrabber::BeginPlay()
 	{
 		ActorsToIgnore.AddUnique(GetOwner());
 		BEPawn = Cast<ABEPawnNew>(GetOwner());
-		// ...
 		CollisionParams = FCollisionQueryParams(NAME_None, false, BEPawn);
 		if (PhysicsHandleClass)
 		{
 			PhysicsHandleComp = Cast<UPhysicsHandleComponent>(BEPawn->GetComponentByClass(PhysicsHandleClass));
-// 			if (PhysicsHandleComp)
-// 			{
-// 				UE_LOG(LogTemp, Warning, TEXT("Win-go! Got the physics comp. Sh-sh-shaaaa"))
-// 			}
 		}
 	}
 }
