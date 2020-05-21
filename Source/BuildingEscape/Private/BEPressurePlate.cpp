@@ -7,7 +7,7 @@
 // Sets default values
 ABEPressurePlate::ABEPressurePlate()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	BoxCollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComp"));
@@ -26,6 +26,14 @@ void ABEPressurePlate::BeginPlay()
 void ABEPressurePlate::BeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("begin overlap - bind successful"));
-}
+	UStaticMeshComponent* StaticMeshComp = Cast<UStaticMeshComponent>(OtherComp);
+	if (StaticMeshComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("static mesh comp - valid"));
+	}
+// 	else
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("static mesh comp - NOT valid"));
+// 	}
+ }
 

@@ -12,13 +12,13 @@
 // Sets default values
 ABEPawnNew::ABEPawnNew()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
 	GrabberComp = CreateDefaultSubobject<UBEGrabber>(TEXT("Grabber"));
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
- 	FloatingMovementComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovementComp"));
-  	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionComp"));
+	FloatingMovementComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovementComp"));
+	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionComp"));
 	PhysicsHandleComp = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandleComp"));
 	
 	RootComponent = CapsuleComp;
