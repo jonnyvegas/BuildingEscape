@@ -66,7 +66,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TraceDistance;
 
-	ETraceTypeQuery TracingType;
+	//ETraceTypeQuery TracingType;
 
 	UPROPERTY()
 	TArray<AActor*> ActorsToIgnore;

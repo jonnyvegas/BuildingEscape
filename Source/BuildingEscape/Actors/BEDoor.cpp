@@ -5,11 +5,12 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "Engine/TriggerVolume.h"
+#include "BEPressurePlate.h"
 
 // Sets default values
 ABEDoor::ABEDoor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Comp"));
@@ -30,20 +31,26 @@ ABEDoor::ABEDoor()
 	InitialYaw = 0.f;
 	DoorLastOpened = 0.f;
 	DoorDelay = 2.f;
+	bOpenDoor = false;
+	ItemWeightThreshold = 200.f;
 }
 
 // Called when the game starts or when spawned
 void ABEDoor::BeginPlay()
 {
 	Super::BeginPlay();
+	if (PressurePlate)
+	{
+		PressurePlate->ItemsWeightChangedDel.AddDynamic(this, &ABEDoor::SetOpenOrClose);
+	}
 	if (DoorMeshComp)
- 	{
- 		DoorRotation = DoorMeshComp->GetComponentRotation();
+	{
+		DoorRotation = DoorMeshComp->GetComponentRotation();
 		CurrentYaw = DoorRotation.Yaw;
 		InitialYaw = CurrentYaw;
 		TargetYaw = CurrentYaw + YawToAdd;
- 		//DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, DoorRotation.Yaw + 90.f, DoorRotation.Roll));
- 	}
+		//DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, DoorRotation.Yaw + 90.f, DoorRotation.Roll));
+	}
 	
 }
 
@@ -51,31 +58,32 @@ void ABEDoor::BeginPlay()
 void ABEDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (PressurePlate)
-	{
-		PressurePlate->GetOverlappingActors(OverlappingActors, ActorSubclass);
-		if (OverlappingActors.Num() > 0)
-		{
-			for (AActor* Actor : OverlappingActors)
-			{
-				PawnToCheck = Cast<APawn>(Actor);
-				if (PawnToCheck)
-				{
-					OpenOrCloseDoor(DeltaTime, true);
-					DoorLastOpened = GetWorld()->GetTimeSeconds();
-					break;
-				}
-			}
-		}
-		else
-		{
-			if (GetWorld()->GetTimeSeconds() - DoorLastOpened >= DoorDelay)
-			{
-				OpenOrCloseDoor(DeltaTime, false);
-				//break;
-			}
-		}
-	}
+	OpenOrCloseDoor(DeltaTime, bOpenDoor);
+// 	if (PressurePlate)
+// 	{
+// 		PressurePlate->GetOverlappingActors(OverlappingActors, ActorSubclass);
+// 		if (OverlappingActors.Num() > 0)
+// 		{
+// 			for (AActor* Actor : OverlappingActors)
+// 			{
+// 				PawnToCheck = Cast<APawn>(Actor);
+// 				if (PawnToCheck)
+// 				{
+// 					OpenOrCloseDoor(DeltaTime, true);
+// 					DoorLastOpened = GetWorld()->GetTimeSeconds();
+// 					break;
+// 				}
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if (GetWorld()->GetTimeSeconds() - DoorLastOpened >= DoorDelay)
+// 			{
+// 				OpenOrCloseDoor(DeltaTime, false);
+// 				//break;
+// 			}
+// 		}
+// 	}
 }
 
 void ABEDoor::OpenOrCloseDoor(float DeltaTime, bool bOpen)
@@ -93,4 +101,9 @@ void ABEDoor::OpenOrCloseDoor(float DeltaTime, bool bOpen)
 		//DoorRotation = DoorMeshComp->GetComponentRotation();
 		DoorMeshComp->SetWorldRotation(FRotator(DoorRotation.Pitch, CurrentYaw, DoorRotation.Roll));
 	}
+}
+
+void ABEDoor::SetOpenOrCloseGivenWeight(float ItemsWeight)
+{
+	bOpenDoor = ItemsWeight >= ItemWeightThreshold;
 }

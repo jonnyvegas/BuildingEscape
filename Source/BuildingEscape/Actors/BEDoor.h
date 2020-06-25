@@ -37,7 +37,7 @@ protected:
 	UStaticMeshComponent* DoorFrameComp;
 
 	UPROPERTY(EditAnywhere)
-	class ATriggerVolume* PressurePlate;
+	class ABEPressurePlate* PressurePlate;
 
 // 	UPROPERTY(EditAnywhere)
 // 	class AActor* ActorToOpenDoor;
@@ -69,6 +69,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float DoorDelay;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float ItemWeightThreshold;
+
 	UPROPERTY()
 	TArray<AActor*> OverlappingActors;
 
@@ -77,5 +80,11 @@ protected:
 
 	UPROPERTY()
 	APawn* PawnToCheck;
+
+	UPROPERTY()
+	bool bOpenDoor;
+public:
+	UFUNCTION()
+	void SetOpenOrCloseGivenWeight(float ItemsWeight);
 
 };

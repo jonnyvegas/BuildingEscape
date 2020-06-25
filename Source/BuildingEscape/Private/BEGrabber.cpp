@@ -12,6 +12,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "BEPawnNew.h"
+#include "../Public/BEItem.h"
 
 // Sets default values for this component's properties
 UBEGrabber::UBEGrabber()
@@ -25,7 +26,7 @@ UBEGrabber::UBEGrabber()
 	TraceDistance = 1000.f;
 	
 	// Cheating!
-	TracingType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
+	//TracingType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
 
 	QueryParams = FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody);
 
@@ -67,8 +68,13 @@ void UBEGrabber::GrabItem()
 	// Let's see if we hit anything.
 	if (TraceForHit(HitResult) && PhysicsHandleComp && PrimitiveCompClass)
 	{
-		// Cool, grab it.
-		PhysicsHandleComp->GrabComponentAtLocation(HitResult.GetComponent(), NAME_None, GetLineTraceEnd());
+		ABEItem* BEItem = Cast<ABEItem>(HitResult.GetActor());
+		if (BEItem)
+		{
+			PhysicsHandleComp->GrabComponentAtLocation(BEItem->GetStaticMesh(), NAME_None, GetLineTraceEnd());//BEItem->GetStaticMesh()->GetComponentLocation());//GetLineTraceEnd());
+		}
+		// We hit something... 
+		//PhysicsHandleComp->GrabComponentAtLocation(HitResult.GetComponent(), NAME_None, GetLineTraceEnd());
 	}
 }
 
@@ -121,6 +127,7 @@ bool UBEGrabber::TraceForHit(FHitResult& TheHit)
 	TheHit = FHitResult();
 	if (GetWorld())
 	{
+		//GetWorld()->LineTrace
 		GetWorld()->LineTraceSingleByObjectType(HitResult, PawnViewLoc, GetLineTraceEnd(), QueryParams, CollisionParams);
 		// We hit something. Nice...
 		if (HitResult.GetComponent())

@@ -17,27 +17,32 @@ public:
 
 protected:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsGrabbable;
+// 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+// 	bool bIsGrabbable;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class USceneComponent* SceneComp;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
 	
+	// Setter for the Static Mesh Component.
 	UFUNCTION(BlueprintCallable)
 	void SetStaticMesh(UStaticMeshComponent* NewStaticMesh);
 
+	// Getter for the Static Mesh Component.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UStaticMeshComponent* GetStaticMesh();
 
-	UFUNCTION(BlueprintCallable)
-	void SetIsGrabbable(bool bGrabbable);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool GetIsGrabbable();
+// 	UFUNCTION(BlueprintCallable)
+// 	void SetIsGrabbable(bool bGrabbable);
+// 
+// 	UFUNCTION(BlueprintCallable, BlueprintPure)
+// 	bool GetIsGrabbable();
 
 };
